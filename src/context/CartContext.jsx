@@ -39,6 +39,7 @@ export function CartProvider({ children }) {
           name: product.name,
           price: product.price,
           image_url: product.image_urls?.[0] || product.image_url,
+          productUrl: `${window.location.origin}/produit/${product.id}`,
           qty,
         },
       ];

@@ -58,6 +58,11 @@ npm run dev
 
 Ouvre `http://localhost:5173`.
 
+### Installer comme application mobile
+Sur un téléphone Android, ouvre le site dans Chrome et choisis "Ajouter à l'écran d'accueil" dans le menu du navigateur.
+
+Sur iPhone, utilise le bouton de partage puis "Sur l’écran d’accueil".
+
 ## 4. Personnaliser le nom de la boutique
 
 Dans `src/config.js`, change :

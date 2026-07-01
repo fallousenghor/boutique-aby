@@ -1,0 +1,26 @@
+{
+  "name": "Ma Boutique",
+  "short_name": "Boutique",
+  "description": "Habits, chaussures et parfums — commandez en un message via WhatsApp.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#F7EFE3",
+  "background_color": "#FFFFFF",
+  "categories": ["shopping", "retail", "fashion"],
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

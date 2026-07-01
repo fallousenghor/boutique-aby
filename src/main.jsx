@@ -5,6 +5,7 @@ import "./index.css";
 import App from "./App.jsx";
 import { CartProvider } from "./context/CartContext";
 import { AuthProvider } from "./context/AuthContext";
+import { registerServiceWorker } from "./registerServiceWorker";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -17,3 +18,5 @@ createRoot(document.getElementById("root")).render(
     </BrowserRouter>
   </StrictMode>
 );
+
+registerServiceWorker();

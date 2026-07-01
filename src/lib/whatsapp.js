@@ -1,16 +1,33 @@
 import { CONFIG, formatPrice } from "../config";
 
+function getProductUrlFromItem(item) {
+  if (item.productUrl) {
+    return item.productUrl;
+  }
+
+  if (typeof window !== "undefined") {
+    return new URL(`/produit/${item.id}`, window.location.origin).href;
+  }
+
+  return `https://example.com/produit/${item.id}`;
+}
+
 export function buildOrderMessage(items, total) {
-  const lines = items.map(
-    (item) => `• ${item.qty} x ${item.name} — ${formatPrice(item.price * item.qty)}`
-  );
+  const lines = items.flatMap((item) => {
+    const itemLines = [
+      `• ${item.qty} x ${item.name} — ${formatPrice(item.price * item.qty)}`,
+      item.image_url ? `  Photo : ${item.image_url}` : null,
+      `  Voir : ${getProductUrlFromItem(item)}`,
+      "",
+    ];
+    return itemLines.filter(Boolean);
+  });
 
   return [
     `Bonjour ${CONFIG.brandName} 👋`,
     "Je souhaite commander :",
     "",
     ...lines,
-    "",
     `Total : ${formatPrice(total)}`,
     "",
     "Merci de me confirmer la disponibilité 🙏",

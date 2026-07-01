@@ -117,7 +117,8 @@ export default function ProductDetail() {
         </div>
       )}
 
-      <div className="px-5 pt-5">
+      <div className="relative -mt-10 rounded-[32px] border border-white/60 bg-white/80 backdrop-blur-2xl shadow-soft px-5 pt-6 pb-6 md:mx-5">
+        <div className="absolute inset-x-0 -top-6 h-6 bg-gradient-to-b from-white/90 to-transparent" />
         {product.categories?.name && (
           <span className="text-[11px] uppercase tracking-wide text-terracotta-500 font-semibold">
             {product.categories.name}
@@ -140,29 +141,36 @@ export default function ProductDetail() {
           </p>
         )}
 
-        <div className="flex items-center gap-3 mt-6">
-          <span className="text-sm font-semibold text-ink-400">Quantité</span>
-          <div className="flex items-center gap-3 bg-white rounded-full px-3 py-1.5 shadow-soft">
-            <button
-              onClick={() => setQty((q) => Math.max(1, q - 1))}
-              className="text-ink-500"
-              aria-label="Diminuer la quantité"
-            >
-              <IconMinus className="w-4 h-4" />
-            </button>
-            <span className="w-6 text-center font-semibold price-tag">{qty}</span>
-            <button
-              onClick={() => setQty((q) => q + 1)}
-              className="text-ink-500"
-              aria-label="Augmenter la quantité"
-            >
-              <IconPlus className="w-4 h-4" />
-            </button>
+        <div className="mt-6 rounded-[32px] border border-white/50 bg-sable-50/90 px-4 py-4 shadow-sm backdrop-blur-xl">
+          <div className="flex items-center justify-between gap-4">
+            <div>
+              <span className="block text-sm font-semibold text-ink-600">Quantité</span>
+              <p className="text-xs text-ink-400 mt-1">Choisissez le nombre d’articles</p>
+            </div>
+            <div className="inline-flex items-center gap-2 rounded-full border border-ink-200 bg-white/95 p-1.5 shadow-sm">
+              <button
+                type="button"
+                onClick={() => setQty((q) => Math.max(1, q - 1))}
+                className="h-11 w-11 rounded-full bg-white text-ink-500 shadow transition hover:bg-sable-200"
+                aria-label="Diminuer la quantité"
+              >
+                <IconMinus className="w-4 h-4" />
+              </button>
+              <span className="min-w-[42px] text-center text-sm font-semibold text-ink-700">{qty}</span>
+              <button
+                type="button"
+                onClick={() => setQty((q) => q + 1)}
+                className="h-11 w-11 rounded-full bg-white text-ink-500 shadow transition hover:bg-sable-200"
+                aria-label="Augmenter la quantité"
+              >
+                <IconPlus className="w-4 h-4" />
+              </button>
+            </div>
           </div>
         </div>
       </div>
 
-      <div className="fixed md:static bottom-16 md:bottom-auto inset-x-0 px-5 py-3 bg-sable/95 md:bg-transparent backdrop-blur md:backdrop-blur-none border-t md:border-none border-ink-500/10 flex gap-3 md:mt-6">
+      <div className="fixed md:static bottom-0 md:bottom-auto inset-x-0 px-5 py-4 bg-white/70 backdrop-blur-xl shadow-[0_-18px_45px_rgba(15,23,42,0.18)] border-t border-white/60 md:bg-transparent md:shadow-none md:border-none flex gap-3 md:mt-6 z-20">
         <button
           disabled={product.in_stock === false}
           onClick={() => {
@@ -170,7 +178,7 @@ export default function ProductDetail() {
             setAdded(true);
             setTimeout(() => setAdded(false), 1500);
           }}
-          className="flex-1 flex items-center justify-center gap-2 bg-terracotta-500 disabled:bg-ink-400/40 hover:bg-terracotta-600 transition-colors text-sable font-semibold rounded-full py-3 text-sm"
+          className="flex-1 flex items-center justify-center gap-3 bg-terracotta-500 disabled:bg-ink-400/40 hover:bg-terracotta-600 transition-colors text-white font-semibold rounded-full py-4 text-sm shadow-soft"
         >
           <IconBag className="w-4 h-4" />
           {added ? "Ajouté !" : "Ajouter au panier"}
@@ -179,7 +187,8 @@ export default function ProductDetail() {
           href={getWhatsappSingleProductLink(product)}
           target="_blank"
           rel="noreferrer"
-          className="flex items-center justify-center gap-2 bg-[#25D366] hover:opacity-90 transition-opacity text-white font-semibold rounded-full px-4 text-sm"
+          className="flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#1ebe57] transition-colors text-white font-semibold rounded-full px-4 py-4 text-sm shadow-soft"
+          aria-label="Commander sur WhatsApp"
         >
           <IconWhatsapp className="w-4 h-4" />
         </a>

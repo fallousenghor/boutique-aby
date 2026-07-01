@@ -23,12 +23,25 @@ export function getWhatsappOrderLink(items, total) {
   return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
 }
 
+function getProductUrl(product) {
+  if (typeof window !== "undefined") {
+    return new URL(`/produit/${product.id}`, window.location.origin).href;
+  }
+  return `https://example.com/produit/${product.id}`;
+}
+
 export function getWhatsappSingleProductLink(product) {
+  const imageUrl = product.image_urls?.[0] || product.image_url || null;
+  const productUrl = getProductUrl(product);
   const message = [
     `Bonjour ${CONFIG.brandName} 👋`,
     `Je suis intéressé(e) par : ${product.name} (${formatPrice(product.price)})`,
+    imageUrl ? `Photo : ${imageUrl}` : null,
+    `Voir le produit : ${productUrl}`,
     "Est-il disponible ?",
-  ].join("\n");
+  ]
+    .filter(Boolean)
+    .join("\n");
   const phone = CONFIG.whatsappNumber.replace(/\D/g, "");
   return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
 }

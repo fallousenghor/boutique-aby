@@ -14,6 +14,7 @@ export default function ProductDetail() {
   const [loading, setLoading] = useState(true);
   const [qty, setQty] = useState(1);
   const [added, setAdded] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(0);
 
   useEffect(() => {
     let ignore = false;
@@ -34,6 +35,10 @@ export default function ProductDetail() {
       ignore = true;
     };
   }, [id]);
+
+  useEffect(() => {
+    setSelectedImage(0);
+  }, [product]);
 
   if (loading) {
     return (
@@ -56,13 +61,21 @@ export default function ProductDetail() {
     );
   }
 
+  const productImages =
+    product?.image_urls?.length > 0
+      ? product.image_urls.filter(Boolean)
+      : product?.image_url
+      ? [product.image_url]
+      : [];
+  const selectedImageUrl = productImages[selectedImage] || productImages[0] || null;
+
   return (
     <div className="pb-28 md:pb-10 max-w-4xl mx-auto">
       <div className="relative">
         <div className="aspect-square md:aspect-[16/10] bg-sable-200">
-          {product.image_url ? (
+          {selectedImageUrl ? (
             <img
-              src={product.image_url}
+              src={selectedImageUrl}
               alt={product.name}
               className="w-full h-full object-cover"
             />
@@ -80,6 +93,29 @@ export default function ProductDetail() {
           <IconArrowLeft className="w-5 h-5 text-ink-500" />
         </button>
       </div>
+
+      {productImages.length > 1 && (
+        <div className="grid grid-cols-3 gap-2 px-5 pt-3">
+          {productImages.map((src, index) => (
+            <button
+              key={src}
+              type="button"
+              onClick={() => setSelectedImage(index)}
+              className={`h-20 rounded-xl overflow-hidden border ${
+                index === selectedImage
+                  ? "border-terracotta-500"
+                  : "border-ink-200"
+              }`}
+            >
+              <img
+                src={src}
+                alt={`${product.name} ${index + 1}`}
+                className="w-full h-full object-cover"
+              />
+            </button>
+          ))}
+        </div>
+      )}
 
       <div className="px-5 pt-5">
         {product.categories?.name && (

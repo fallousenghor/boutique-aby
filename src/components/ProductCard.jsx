@@ -2,15 +2,16 @@ import { Link } from "react-router-dom";
 import { formatPrice } from "../config";
 
 export default function ProductCard({ product }) {
+  const imageUrl = product.image_urls?.[0] || product.image_url;
   return (
     <Link
       to={`/produit/${product.id}`}
       className="group flex flex-col bg-white rounded-2xl overflow-hidden shadow-soft hover:shadow-card transition-shadow"
     >
       <div className="aspect-[4/5] bg-sable-200 overflow-hidden relative">
-        {product.image_url ? (
+        {imageUrl ? (
           <img
-            src={product.image_url}
+            src={imageUrl}
             alt={product.name}
             loading="lazy"
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"

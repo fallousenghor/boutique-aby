@@ -73,9 +73,9 @@ export default function AdminDashboard() {
             className="flex items-center gap-3 bg-white rounded-xl p-3 shadow-soft"
           >
             <div className="w-12 h-12 rounded-lg bg-sable-200 overflow-hidden shrink-0">
-              {product.image_url && (
+              {(product.image_urls?.[0] || product.image_url) && (
                 <img
-                  src={product.image_url}
+                  src={product.image_urls?.[0] || product.image_url}
                   alt={product.name}
                   className="w-full h-full object-cover"
                 />

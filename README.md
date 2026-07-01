@@ -20,6 +20,11 @@ catégories.
    `supabase/schema.sql` de ce dossier, puis clique **Run**.
    Cela crée les tables `categories`, `products`, `orders`, active la sécurité
    (RLS), et crée le bucket de stockage `product-images`.
+
+> Si ta base Supabase existe déjà, ne relance pas `supabase/schema.sql` entier
+> : cela provoquera des erreurs de doublons sur les tables et les policies.
+> Exécute seulement `supabase/add_image_urls_column.sql` si tu veux ajouter la
+> colonne `image_urls` sur la table `products`.
 3. Dans **Authentication → Users**, clique **Add user** pour créer le compte de
    connexion de l'admin (email + mot de passe). C'est ce compte qui se connectera
    sur `/admin`.

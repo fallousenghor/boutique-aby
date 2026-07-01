@@ -6,9 +6,16 @@ const emptyForm = {
   price: "",
   description: "",
   category_id: "",
-  image_url: "",
   in_stock: true,
 };
+
+function getProductImages(product) {
+  if (!product) return [];
+  if (Array.isArray(product.image_urls) && product.image_urls.length > 0) {
+    return product.image_urls.filter(Boolean);
+  }
+  return product.image_url ? [product.image_url] : [];
+}
 
 export default function ProductForm({ product, categories, onClose, onSaved }) {
   const [form, setForm] = useState(
@@ -18,47 +25,67 @@ export default function ProductForm({ product, categories, onClose, onSaved }) {
           price: product.price ?? "",
           description: product.description ?? "",
           category_id: product.category_id ?? "",
-          image_url: product.image_url ?? "",
           in_stock: product.in_stock ?? true,
         }
       : emptyForm
   );
-  const [imageFile, setImageFile] = useState(null);
-  const [preview, setPreview] = useState(product?.image_url ?? "");
+  const [images, setImages] = useState(
+    getProductImages(product).map((src) => ({ src, file: null }))
+  );
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState(null);
 
-  function handleImageChange(e) {
-    const file = e.target.files?.[0];
+  function handleImageChange(event) {
+    const file = event.target.files?.[0];
     if (!file) return;
-    setImageFile(file);
-    setPreview(URL.createObjectURL(file));
+    if (images.length >= 3) return;
+    setImages((current) => [
+      ...current,
+      { src: URL.createObjectURL(file), file },
+    ]);
   }
 
-  async function uploadImage() {
-    if (!imageFile) return form.image_url || null;
-    const ext = imageFile.name.split(".").pop();
+  function removeImage(index) {
+    setImages((current) => current.filter((_, idx) => idx !== index));
+  }
+
+  async function uploadImageFile(file) {
+    const ext = file.name.split(".").pop();
     const path = `${crypto.randomUUID()}.${ext}`;
     const { error: uploadError } = await supabase.storage
       .from("product-images")
-      .upload(path, imageFile, { upsert: false });
+      .upload(path, file, { upsert: false });
     if (uploadError) throw uploadError;
     const { data } = supabase.storage.from("product-images").getPublicUrl(path);
     return data.publicUrl;
+  }
+
+  async function uploadImages() {
+    const uploaded = await Promise.all(
+      images.map(async (image) => {
+        if (image.file) {
+          return uploadImageFile(image.file);
+        }
+        return image.src;
+      })
+    );
+    return uploaded.filter(Boolean);
   }
 
   async function handleSubmit(e) {
     e.preventDefault();
     setSaving(true);
     setError(null);
+
     try {
-      const image_url = await uploadImage();
+      const image_urls = await uploadImages();
       const payload = {
         name: form.name.trim(),
         price: Number(form.price),
         description: form.description.trim() || null,
         category_id: form.category_id || null,
-        image_url,
+        image_urls: image_urls.length > 0 ? image_urls : null,
+        image_url: image_urls[0] || null,
         in_stock: form.in_stock,
       };
 
@@ -149,21 +176,41 @@ export default function ProductForm({ product, categories, onClose, onSaved }) {
 
           <div>
             <label className="text-xs font-semibold text-ink-400 uppercase tracking-wide">
-              Image
+              Photos du produit (max 3)
             </label>
-            {preview && (
-              <img
-                src={preview}
-                alt="Aperçu"
-                className="w-24 h-24 object-cover rounded-xl mt-2 mb-2"
-              />
+            <div className="mt-2 grid grid-cols-3 gap-2">
+              {images.map((image, index) => (
+                <div key={index} className="relative rounded-xl overflow-hidden bg-sable-200">
+                  <img
+                    src={image.src}
+                    alt={`Aperçu ${index + 1}`}
+                    className="w-full h-24 object-cover"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => removeImage(index)}
+                    className="absolute top-2 right-2 rounded-full bg-white/90 text-ink-600 p-1.5 shadow-soft"
+                    aria-label="Supprimer l'image"
+                  >
+                    ✕
+                  </button>
+                </div>
+              ))}
+              {images.length < 3 && (
+                <label className="flex items-center justify-center h-24 rounded-xl border border-dashed border-ink-300 bg-white text-sm text-ink-400 cursor-pointer">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    className="hidden"
+                  />
+                  Ajouter
+                </label>
+              )}
+            </div>
+            {images.length === 0 && (
+              <p className="text-xs text-ink-400 mt-2">Aucune photo enregistrée pour ce produit.</p>
             )}
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleImageChange}
-              className="mt-1 w-full text-sm"
-            />
           </div>
 
           <label className="flex items-center gap-2 text-sm font-medium text-ink-500 mt-1">

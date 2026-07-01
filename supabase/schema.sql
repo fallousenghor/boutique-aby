@@ -24,6 +24,7 @@ create table if not exists products (
   price numeric(10, 2) not null check (price >= 0),
   description text,
   image_url text,
+  image_urls jsonb,
   category_id uuid references categories(id) on delete set null,
   in_stock boolean not null default true,
   created_at timestamptz not null default now()

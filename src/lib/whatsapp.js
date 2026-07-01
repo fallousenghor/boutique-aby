@@ -14,23 +14,28 @@ function getProductUrlFromItem(item) {
 
 export function buildOrderMessage(items, total) {
   const lines = items.flatMap((item) => {
+    const unit = formatPrice(item.price);
+    const lineHeader = `*${item.name}* — ${item.qty} x ${unit} = ${formatPrice(
+      item.price * item.qty
+    )}`;
     const itemLines = [
-      `• ${item.qty} x ${item.name} — ${formatPrice(item.price * item.qty)}`,
-      item.image_url ? `  Photo : ${item.image_url}` : null,
-      `  Voir : ${getProductUrlFromItem(item)}`,
-      "",
+      lineHeader,
+      item.image_url ? `${item.image_url}` : null,
+      `Voir : ${getProductUrlFromItem(item)}`,
+      "---",
     ];
     return itemLines.filter(Boolean);
   });
 
   return [
     `Bonjour ${CONFIG.brandName} 👋`,
-    "Je souhaite commander :",
+    "*Nouvelle commande*",
     "",
     ...lines,
-    `Total : ${formatPrice(total)}`,
     "",
-    "Merci de me confirmer la disponibilité 🙏",
+    `*Total : ${formatPrice(total)}*`,
+    "",
+    "Merci — j'attends votre confirmation.",
   ].join("\n");
 }
 
@@ -52,10 +57,14 @@ export function getWhatsappSingleProductLink(product) {
   const productUrl = getProductUrl(product);
   const message = [
     `Bonjour ${CONFIG.brandName} 👋`,
-    `Je suis intéressé(e) par : ${product.name} (${formatPrice(product.price)})`,
-    imageUrl ? `Photo : ${imageUrl}` : null,
-    `Voir le produit : ${productUrl}`,
-    "Est-il disponible ?",
+    "*Demande produit*",
+    `*${product.name}*`,
+    `Prix : ${formatPrice(product.price)}`,
+    imageUrl ? `${imageUrl}` : null,
+    `Voir : ${productUrl}`,
+    "Quantité : 1",
+    "",
+    "Pouvez-vous confirmer la disponibilité ?",
   ]
     .filter(Boolean)
     .join("\n");

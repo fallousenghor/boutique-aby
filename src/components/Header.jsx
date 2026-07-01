@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { CONFIG } from "../config";
 import { IconBag } from "./icons";
 import { useCart } from "../context/CartContext";
+import InstallPWA from "./InstallPWA";
 
 export default function Header() {
   const { count } = useCart();
@@ -25,6 +26,9 @@ export default function Header() {
           Panier
           {count > 0 && <span>({count})</span>}
         </Link>
+        <div className="flex items-center">
+          <InstallPWA />
+        </div>
       </div>
       <div className="h-3 bg-indigo-500 scallop-edge" />
     </header>

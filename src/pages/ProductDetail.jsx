@@ -70,7 +70,7 @@ export default function ProductDetail() {
   const selectedImageUrl = productImages[selectedImage] || productImages[0] || null;
 
   return (
-    <div className="pb-28 md:pb-10 max-w-4xl mx-auto">
+    <div className="pb-36 md:pb-10 max-w-4xl mx-auto">
       <div className="relative">
         <div className="aspect-square md:aspect-[16/10] bg-sable-200">
           {selectedImageUrl ? (
@@ -117,60 +117,62 @@ export default function ProductDetail() {
         </div>
       )}
 
-      <div className="relative -mt-10 rounded-[32px] border border-white/60 bg-white/80 backdrop-blur-2xl shadow-soft px-5 pt-6 pb-6 md:mx-5">
-        <div className="absolute inset-x-0 -top-6 h-6 bg-gradient-to-b from-white/90 to-transparent" />
-        {product.categories?.name && (
-          <span className="text-[11px] uppercase tracking-wide text-terracotta-500 font-semibold">
-            {product.categories.name}
-          </span>
-        )}
-        <h1 className="font-display italic text-2xl mt-1">{product.name}</h1>
-        <p className="price-tag text-xl font-bold text-indigo-500 mt-2">
-          {formatPrice(product.price)}
-        </p>
+      <div className="px-5 pt-6">
+        <div className="bg-white rounded-2xl shadow-md p-5">
+          {product.categories?.name && (
+            <span className="text-[11px] uppercase tracking-wide text-terracotta-500 font-semibold">
+              {product.categories.name}
+            </span>
+          )}
+          <h1 className="font-display italic text-2xl mt-1">{product.name}</h1>
+          <p className="price-tag text-xl font-bold text-indigo-500 mt-2">{formatPrice(product.price)}</p>
 
-        {product.description && (
-          <p className="text-sm text-ink-400 leading-relaxed mt-4 whitespace-pre-line">
-            {product.description}
-          </p>
-        )}
+          {product.description && (
+            <p className="text-sm text-ink-400 leading-relaxed mt-4 whitespace-pre-line">
+              {product.description}
+            </p>
+          )}
 
-        {product.in_stock === false && (
-          <p className="mt-4 inline-block bg-ink-500 text-sable text-xs font-bold uppercase tracking-wide px-3 py-1.5 rounded-full">
-            Rupture de stock
-          </p>
-        )}
+          {product.in_stock === false && (
+            <p className="mt-4 inline-block bg-ink-500 text-sable text-xs font-bold uppercase tracking-wide px-3 py-1.5 rounded-full">
+              Rupture de stock
+            </p>
+          )}
 
-        <div className="mt-6 rounded-[32px] border border-white/50 bg-sable-50/90 px-4 py-4 shadow-sm backdrop-blur-xl">
-          <div className="flex items-center justify-between gap-4">
-            <div>
-              <span className="block text-sm font-semibold text-ink-600">Quantité</span>
-              <p className="text-xs text-ink-400 mt-1">Choisissez le nombre d’articles</p>
-            </div>
-            <div className="inline-flex items-center gap-2 rounded-full border border-ink-200 bg-white/95 p-1.5 shadow-sm">
-              <button
-                type="button"
-                onClick={() => setQty((q) => Math.max(1, q - 1))}
-                className="h-11 w-11 rounded-full bg-white text-ink-500 shadow transition hover:bg-sable-200"
-                aria-label="Diminuer la quantité"
-              >
-                <IconMinus className="w-4 h-4" />
-              </button>
-              <span className="min-w-[42px] text-center text-sm font-semibold text-ink-700">{qty}</span>
-              <button
-                type="button"
-                onClick={() => setQty((q) => q + 1)}
-                className="h-11 w-11 rounded-full bg-white text-ink-500 shadow transition hover:bg-sable-200"
-                aria-label="Augmenter la quantité"
-              >
-                <IconPlus className="w-4 h-4" />
-              </button>
+          <div className="mt-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <span className="block text-sm font-semibold text-ink-700">Quantité</span>
+                <p className="text-xs text-ink-400 mt-1">Choisissez le nombre d’articles</p>
+              </div>
+              <div className="inline-flex items-center gap-2 rounded-full border border-ink-200 bg-white p-1">
+                <button
+                  type="button"
+                  onClick={() => setQty((q) => Math.max(1, q - 1))}
+                  className="h-10 w-10 rounded-full bg-sable-50 text-ink-600 hover:bg-sable-100 transition"
+                  aria-label="Diminuer la quantité"
+                >
+                  <IconMinus className="w-4 h-4" />
+                </button>
+                <span className="min-w-[36px] text-center text-sm font-semibold text-ink-700">{qty}</span>
+                <button
+                  type="button"
+                  onClick={() => setQty((q) => q + 1)}
+                  className="h-10 w-10 rounded-full bg-sable-50 text-ink-600 hover:bg-sable-100 transition"
+                  aria-label="Augmenter la quantité"
+                >
+                  <IconPlus className="w-4 h-4" />
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="fixed md:static bottom-0 md:bottom-auto inset-x-0 px-5 py-4 bg-white/70 backdrop-blur-xl shadow-[0_-18px_45px_rgba(15,23,42,0.18)] border-t border-white/60 md:bg-transparent md:shadow-none md:border-none flex gap-3 md:mt-6 z-20">
+      <div
+        className="fixed md:static bottom-0 md:bottom-auto inset-x-0 px-5 py-4 bg-white border-t border-ink-200 flex gap-3 md:mt-6 z-50"
+        style={{ paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 12px)' }}
+      >
         <button
           disabled={product.in_stock === false}
           onClick={() => {
@@ -178,7 +180,7 @@ export default function ProductDetail() {
             setAdded(true);
             setTimeout(() => setAdded(false), 1500);
           }}
-          className="flex-1 flex items-center justify-center gap-3 bg-terracotta-500 disabled:bg-ink-400/40 hover:bg-terracotta-600 transition-colors text-white font-semibold rounded-full py-4 text-sm shadow-soft"
+          className="flex-1 flex items-center justify-center gap-3 bg-terracotta-600 disabled:bg-ink-400/40 hover:bg-terracotta-700 transition-colors text-white font-bold rounded-lg py-4 text-base shadow-lg"
         >
           <IconBag className="w-4 h-4" />
           {added ? "Ajouté !" : "Ajouter au panier"}
@@ -187,7 +189,7 @@ export default function ProductDetail() {
           href={getWhatsappSingleProductLink(product)}
           target="_blank"
           rel="noreferrer"
-          className="flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#1ebe57] transition-colors text-white font-semibold rounded-full px-4 py-4 text-sm shadow-soft"
+          className="flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#1ebe57] transition-colors text-white font-semibold rounded-lg px-4 py-3 text-sm shadow-md"
           aria-label="Commander sur WhatsApp"
         >
           <IconWhatsapp className="w-4 h-4" />

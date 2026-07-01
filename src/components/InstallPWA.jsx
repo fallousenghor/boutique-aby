@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { IconPlus } from "./icons";
 
 export default function InstallPWA() {
   const [deferredPrompt, setDeferredPrompt] = useState(null);
@@ -41,10 +42,9 @@ export default function InstallPWA() {
         onClick={handleInstall}
         aria-label="Installer l'application"
         title="Installer l'application"
-        className="ml-3 px-3 py-1 rounded-full bg-white/90 text-indigo-700 hover:bg-white/95 transition text-sm flex items-center gap-2"
+        className="ml-3 p-2 rounded-full bg-white/90 text-indigo-700 hover:bg-white/95 transition shadow-sm"
       >
-        {/* simple label to avoid distracting iconography */}
-        Installer
+        <IconPlus className="w-4 h-4" />
       </button>
 
       {showHint && (

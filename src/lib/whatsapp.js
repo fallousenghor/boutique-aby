@@ -45,6 +45,12 @@ export function getWhatsappOrderLink(items, total) {
   return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
 }
 
+// function getProductUrl(product) {
+//   if (typeof window !== "undefined") {
+//     return new URL(`/produit/${product.id}`, window.location.origin).href;
+//   }
+//   return `https://example.com/produit/${product.id}`;
+// }
 function getProductUrl(product) {
   if (typeof window !== "undefined") {
     return new URL(`/produit/${product.id}`, window.location.origin).href;

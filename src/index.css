@@ -1,0 +1,41 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-sable text-ink font-body antialiased;
+  }
+  h1, h2, h3, h4 {
+    @apply font-display;
+  }
+  ::selection {
+    @apply bg-ochre-400/40;
+  }
+  *:focus-visible {
+    outline: 2px solid #1F3A5F;
+    outline-offset: 2px;
+  }
+}
+
+@layer utilities {
+  .scallop-edge {
+    -webkit-mask-image: radial-gradient(circle at 6px 6px, transparent 6px, black 6.5px);
+    -webkit-mask-size: 12px 12px;
+    -webkit-mask-repeat: repeat-x;
+    -webkit-mask-position: bottom;
+    mask-image: radial-gradient(circle at 6px 6px, transparent 6px, black 6.5px);
+    mask-size: 12px 12px;
+    mask-repeat: repeat-x;
+    mask-position: bottom;
+  }
+  .price-tag {
+    font-family: 'Space Mono', monospace;
+    font-variant-numeric: tabular-nums;
+  }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+}

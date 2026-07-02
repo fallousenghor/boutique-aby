@@ -1,7 +1,7 @@
 export const CONFIG = {
-  brandName: "Ma Boutique",
+  brandName: "Rawda Store",
   tagline: "Habits • Chaussures • Parfums",
-  whatsappNumber: import.meta.env.VITE_WHATSAPP_NUMBER || "221771234567",
+  whatsappNumber: import.meta.env.VITE_WHATSAPP_NUMBER || "221773437122",
   currency: "FCFA",
 };
 

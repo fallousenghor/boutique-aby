@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import { IconLock } from "../../components/icons";
 
 export default function AdminLogin() {
   const { session, signIn } = useAuth();
@@ -32,8 +31,12 @@ export default function AdminLogin() {
     <div className="min-h-[70vh] flex items-center justify-center px-5 py-10">
       <div className="w-full max-w-sm">
         <div className="flex flex-col items-center mb-6">
-          <div className="bg-indigo-500 text-sable w-12 h-12 rounded-full flex items-center justify-center mb-3">
-            <IconLock className="w-5 h-5" />
+          <div className="flex h-20 w-20 items-center justify-center rounded-full bg-indigo-500/10 border border-indigo-200/40 mb-4">
+            <img
+              src="/abylogo.png"
+              alt="RAWDA Store"
+              className="h-14 w-14 rounded-full object-contain"
+            />
           </div>
           <h1 className="font-display italic text-2xl">Espace admin</h1>
           <p className="text-sm text-ink-400 mt-1">Connectez-vous pour gérer la boutique</p>

@@ -15,27 +15,27 @@ function getProductUrlFromItem(item) {
 export function buildOrderMessage(items, total) {
   const lines = items.flatMap((item) => {
     const unit = formatPrice(item.price);
-    const lineHeader = `*${item.name}* — ${item.qty} x ${unit} = ${formatPrice(
-      item.price * item.qty
-    )}`;
-    const itemLines = [
-      lineHeader,
-      item.image_url ? `${item.image_url}` : null,
-      `Voir : ${getProductUrlFromItem(item)}`,
-      "---",
-    ];
-    return itemLines.filter(Boolean);
+    return [
+      `• *${item.name}*`,
+      `  • Quantité : ${item.qty}`,
+      `  • Prix unitaire : ${unit}`,
+      `  • Total article : ${formatPrice(item.price * item.qty)}`,
+      item.id ? `  • Référence : ${item.id}` : null,
+      "",
+    ].filter(Boolean);
   });
 
   return [
+    `🛍️ *Commande RAWDA Store*`,
     `Bonjour ${CONFIG.brandName} 👋`,
-    "*Nouvelle commande*",
+    "",
+    "*Détails de la commande*",
     "",
     ...lines,
+    `*Montant total : ${formatPrice(total)}*`,
     "",
-    `*Total : ${formatPrice(total)}*`,
-    "",
-    "Merci — j'attends votre confirmation.",
+    "Merci de confirmer la disponibilité et l'heure de livraison.",
+    "Nous attendons votre retour pour valider la commande.",
   ].join("\n");
 }
 
@@ -59,18 +59,16 @@ function getProductUrl(product) {
 }
 
 export function getWhatsappSingleProductLink(product) {
-  const imageUrl = product.image_urls?.[0] || product.image_url || null;
-  const productUrl = getProductUrl(product);
   const message = [
+    `🛒 *Demande produit RAWDA Store*`,
     `Bonjour ${CONFIG.brandName} 👋`,
-    "*Demande produit*",
+    "",
     `*${product.name}*`,
     `Prix : ${formatPrice(product.price)}`,
-    imageUrl ? `${imageUrl}` : null,
-    `Voir : ${productUrl}`,
-    "Quantité : 1",
+    `Quantité : 1`,
+    product.id ? `Référence produit : ${product.id}` : null,
     "",
-    "Pouvez-vous confirmer la disponibilité ?",
+    "Merci de confirmer la disponibilité et la livraison.",
   ]
     .filter(Boolean)
     .join("\n");

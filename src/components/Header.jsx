@@ -10,8 +10,15 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-30 bg-indigo-500 text-sable">
       <div className="max-w-5xl mx-auto px-5 py-4 flex items-center justify-between">
-        <Link to="/" className="flex items-baseline gap-2">
-          <span className="font-display italic text-2xl leading-none">
+        <Link to="/" className="flex items-center gap-3">
+          <div className="flex h-14 w-14 items-center justify-center rounded-full bg-white/90 shadow-lg shadow-slate-900/10 ring-2 ring-white/70">
+            <img
+              src="/abylogo.png"
+              alt="RAWDA Store"
+              className="h-10 w-10 rounded-full object-contain"
+            />
+          </div>
+          <span className="hidden sm:inline font-display italic text-lg leading-none text-white">
             {CONFIG.brandName}
           </span>
         </Link>

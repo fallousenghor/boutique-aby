@@ -13,29 +13,37 @@ function getProductUrlFromItem(item) {
 }
 
 export function buildOrderMessage(items, total) {
-  const lines = items.flatMap((item) => {
+  const separator = "─".repeat(24);
+
+  const lines = items.flatMap((item, index) => {
     const unit = formatPrice(item.price);
+    const itemTotal = formatPrice(item.price * item.qty);
     return [
-      `• *${item.name}*`,
-      `  • Quantité : ${item.qty}`,
-      `  • Prix unitaire : ${unit}`,
-      `  • Total article : ${formatPrice(item.price * item.qty)}`,
-      item.id ? `  • Référence : ${item.id}` : null,
+      `*${index + 1}. ${item.name}*`,
+      `   Qté : ${item.qty}  •  PU : ${unit}`,
+      `   Sous-total : *${itemTotal}*`,
+      item.id ? `   Réf : ${item.id}` : null,
       "",
     ].filter(Boolean);
   });
 
   return [
-    `🛍️ *Commande RAWDA Store*`,
+    `🛍️ *NOUVELLE COMMANDE*`,
+    `*RAWDA Store*`,
+    "",
     `Bonjour ${CONFIG.brandName} 👋`,
     "",
-    "*Détails de la commande*",
+    separator,
+    `🧾 *Détails de la commande*`,
+    separator,
     "",
     ...lines,
-    `*Montant total : ${formatPrice(total)}*`,
+    separator,
+    `💰 *Montant total : ${formatPrice(total)}*`,
+    separator,
     "",
-    "Merci de confirmer la disponibilité et l'heure de livraison.",
-    "Nous attendons votre retour pour valider la commande.",
+    "📦 Merci de confirmer la disponibilité et l'heure de livraison.",
+    "✅ Nous attendons votre retour pour valider la commande.",
   ].join("\n");
 }
 
@@ -45,12 +53,6 @@ export function getWhatsappOrderLink(items, total) {
   return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
 }
 
-// function getProductUrl(product) {
-//   if (typeof window !== "undefined") {
-//     return new URL(`/produit/${product.id}`, window.location.origin).href;
-//   }
-//   return `https://example.com/produit/${product.id}`;
-// }
 function getProductUrl(product) {
   if (typeof window !== "undefined") {
     return new URL(`/produit/${product.id}`, window.location.origin).href;
@@ -59,19 +61,27 @@ function getProductUrl(product) {
 }
 
 export function getWhatsappSingleProductLink(product) {
+  const separator = "─".repeat(24);
+
   const message = [
-    `🛒 *Demande produit RAWDA Store*`,
+    `🛒 *DEMANDE PRODUIT*`,
+    `*RAWDA Store*`,
+    "",
     `Bonjour ${CONFIG.brandName} 👋`,
     "",
-    `*${product.name}*`,
-    `Prix : ${formatPrice(product.price)}`,
-    `Quantité : 1`,
-    product.id ? `Référence produit : ${product.id}` : null,
+    separator,
+    `📌 *${product.name}*`,
+    separator,
     "",
-    "Merci de confirmer la disponibilité et la livraison.",
+    `💵 Prix : *${formatPrice(product.price)}*`,
+    `🔢 Quantité : 1`,
+    product.id ? `🏷️ Référence : ${product.id}` : null,
+    "",
+    "📦 Merci de confirmer la disponibilité et la livraison.",
   ]
     .filter(Boolean)
     .join("\n");
+
   const phone = CONFIG.whatsappNumber.replace(/\D/g, "");
   return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
 }
